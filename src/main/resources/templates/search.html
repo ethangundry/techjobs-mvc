@@ -10,10 +10,9 @@
 
     <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
 
-    <form th:action="@{/search/results}">
+    <form th:action="@{/search/results}" th:method="post">
         <h2>Search by:</h2>
 
-        <p>
             <span th:each="column : ${columns}">
                 <input
                         type="radio"
@@ -23,8 +22,6 @@
                         th:checked="${column.key == 'all'}"/>
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
-
-        </p>
 
         <p>
             <label for="searchTerm">Keyword:</label>
@@ -37,7 +34,7 @@
     <hr />
 
     <!-- TODO #2 - Loop over jobs map to display all job fields -->
-    <div th:if="${jobs} and ${jobs.size()}">
+    <div th:if="${jobs} and ${jobs.size() > 0}">
         <p th:text="${jobs.size()} + ' results'">${jobs.size}</p>
         <table th:each="job: ${jobs}" class="job-listing">
             <tr th:each="item : ${job}">
@@ -45,6 +42,10 @@
                 <td th:text="${item.value}"></td>
             </tr>
         </table>
+    </div>
+
+    <div th:unless="${jobs == null}">
+        No Results were found
     </div>
 
 </div>
